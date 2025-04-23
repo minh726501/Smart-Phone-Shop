@@ -1,4 +1,4 @@
-package com.bqminh.Smart.Phone.Shop.config;
+package com.bqminh.SmartPhoneShop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

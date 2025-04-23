@@ -1,4 +1,4 @@
-package com.bqminh.Smart.Phone.Shop;
+package com.bqminh.SmartPhoneShop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

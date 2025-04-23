@@ -1,6 +1,6 @@
-package com.bqminh.Smart.Phone.Shop.repository;
+package com.bqminh.SmartPhoneShop.repository;
 
-import com.bqminh.Smart.Phone.Shop.enity.User;
+import com.bqminh.SmartPhoneShop.enity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User,Long> {

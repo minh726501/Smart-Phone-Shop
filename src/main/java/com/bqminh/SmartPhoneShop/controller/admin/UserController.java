@@ -1,8 +1,8 @@
-package com.bqminh.Smart.Phone.Shop.controller.admin;
+package com.bqminh.SmartPhoneShop.controller.admin;
 
-import com.bqminh.Smart.Phone.Shop.Service.UserService;
-import com.bqminh.Smart.Phone.Shop.enity.User;
-import com.bqminh.Smart.Phone.Shop.repository.UserRepository;
+import com.bqminh.SmartPhoneShop.Service.UserService;
+import com.bqminh.SmartPhoneShop.enity.User;
+import com.bqminh.SmartPhoneShop.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -45,7 +44,33 @@ public class UserController {
         User user=userService.getUserById(id);
         model.addAttribute("viewUser",user);
         return "admin/user/detail";
-
+    }
+    @GetMapping("admin/user/update/{id}")
+    public String updateUser(@PathVariable long id,Model model){
+        User getUserById=userService.getUserById(id);
+        model.addAttribute("updateUser",getUserById);
+        return "admin/user/update";
+    }
+    @PostMapping("admin/user/update")
+    public String postUpdateUser(@ModelAttribute("updateUser") User updateUser){
+        User getUser=userService.getUserById(updateUser.getId());
+        getUser.setAddress(updateUser.getAddress());
+        getUser.setEmail(updateUser.getEmail());
+        getUser.setFullName(updateUser.getFullName());
+        userService.saveUser(getUser);
+        return "redirect:/admin/user";
+    }
+    @GetMapping("admin/user/delete/{id}")
+    public String deleteUser(@PathVariable long id,Model model){
+        User getUser=userService.getUserById(id);
+        model.addAttribute("deleteUser",getUser);
+        return "admin/user/delete";
+    }
+    @PostMapping("admin/user/delete/{id}")
+    public String postDeleteUser(@PathVariable long id){
+        User getUser=userService.getUserById(id);
+        userService.deleteUser(getUser);
+        return "redirect:/admin/user";
     }
 
 

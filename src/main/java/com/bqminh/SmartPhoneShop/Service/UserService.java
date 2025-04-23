@@ -1,11 +1,10 @@
-package com.bqminh.Smart.Phone.Shop.Service;
+package com.bqminh.SmartPhoneShop.Service;
 
-import com.bqminh.Smart.Phone.Shop.enity.User;
-import com.bqminh.Smart.Phone.Shop.repository.UserRepository;
+import com.bqminh.SmartPhoneShop.enity.User;
+import com.bqminh.SmartPhoneShop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,4 +22,8 @@ public class UserService {
     public User getUserById(long id){
         return userRepository.findById(id);
     }
+    public void deleteUser(User user){
+        userRepository.delete(user);
+    }
+
 }

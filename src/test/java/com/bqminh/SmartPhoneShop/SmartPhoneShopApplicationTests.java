@@ -1,4 +1,4 @@
-package com.bqminh.Smart.Phone.Shop;
+package com.bqminh.SmartPhoneShop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

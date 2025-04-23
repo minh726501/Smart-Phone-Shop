@@ -1,4 +1,4 @@
-package com.bqminh.Smart.Phone.Shop.enity;
+package com.bqminh.SmartPhoneShop.enity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

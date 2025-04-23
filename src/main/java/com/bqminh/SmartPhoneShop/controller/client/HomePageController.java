@@ -1,4 +1,4 @@
-package com.bqminh.Smart.Phone.Shop.controller.client;
+package com.bqminh.SmartPhoneShop.controller.client;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
