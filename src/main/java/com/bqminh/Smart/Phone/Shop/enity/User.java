@@ -13,34 +13,22 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotNull
-    @Email(message = "Email cannot be null",regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$")
+   // @NotNull
+   // @Email(message = "Email cannot be null",regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
-    @NotNull
-    @Size(min = 3)
+    //@NotNull
+    //@Size(min = 3)
     private String password;
     private String address;
-    @NotNull
-    @Size(min = 2)
+    //@NotNull
+    //@Size(min = 2)
     private String fullName;
     private String phone;
     private String avatar;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
-    private Role role;
-    @OneToMany(mappedBy = "user")
-    List<Order> orders;
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
 
 
-    public List<Order> getOrders() {
-        return orders;
-    }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+
 
     public long getId() {
         return id;
@@ -50,11 +38,11 @@ public class User {
         this.id = id;
     }
 
-    public @NotNull @Email(message = "Email cannot be null", regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$") String getEmail() {
+    public /*@NotNull @Email(message = "Email cannot be null", regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$")*/ String getEmail() {
         return email;
     }
 
-    public void setEmail(@NotNull @Email(message = "Email cannot be null", regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$") String email) {
+    public void setEmail(/*@NotNull @Email(message = "Email cannot be null", regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$")*/ String email) {
         this.email = email;
     }
 
@@ -98,20 +86,6 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 }
 

@@ -49,7 +49,7 @@
                                 <td>${user.id}</td>
                                 <td>${user.email}</td>
                                 <td>${user.fullName}</td>
-                                <td>${user.getRole().getName()}</td>
+
                                 <td>
                                     <a href="/admin/user/view/${user.id}" class="btn btn-success">View</a>
                                     <a href="/admin/user/update/${user.id}" class="btn btn-warning mx-2">Update</a>
