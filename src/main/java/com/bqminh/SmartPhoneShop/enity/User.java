@@ -25,10 +25,11 @@ public class User {
     private String fullName;
     private String phone;
     private String avatar;
-
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+    @OneToMany(mappedBy = "user")
+    private List<Order>orders;
 
     public long getId() {
         return id;
