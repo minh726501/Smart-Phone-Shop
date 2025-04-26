@@ -1,25 +1,24 @@
 package com.bqminh.SmartPhoneShop.controller.admin;
 
+import com.bqminh.SmartPhoneShop.Service.UploadService;
 import com.bqminh.SmartPhoneShop.Service.UserService;
 import com.bqminh.SmartPhoneShop.enity.User;
 import com.bqminh.SmartPhoneShop.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final UploadService uploadService;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService, UploadService uploadService) {
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.uploadService = uploadService;
     }
 
 
@@ -29,7 +28,8 @@ public class UserController {
         return "admin/user/create";
     }
     @PostMapping("admin/user/create")
-    public String postUSerPage(Model model,@ModelAttribute ("newUser") User newUser ){
+    public String postUSerPage(@ModelAttribute ("newUser") User newUser, @RequestParam("bqmFile")MultipartFile file){
+        String avatar=uploadService.uploadFile(file,"avatar");
         userService.saveUser(newUser);
         return "redirect:/admin/user";
     }
