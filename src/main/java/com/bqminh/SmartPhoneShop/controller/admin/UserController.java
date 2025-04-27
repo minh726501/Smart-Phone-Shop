@@ -3,7 +3,7 @@ package com.bqminh.SmartPhoneShop.controller.admin;
 import com.bqminh.SmartPhoneShop.Service.UploadService;
 import com.bqminh.SmartPhoneShop.Service.UserService;
 import com.bqminh.SmartPhoneShop.enity.User;
-import com.bqminh.SmartPhoneShop.repository.UserRepository;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +15,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final UploadService uploadService;
+    //private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UploadService uploadService) {
+    public UserController(UserService userService, UploadService uploadService/*PasswordEncoder passwordEncoder*/) {
         this.userService = userService;
         this.uploadService = uploadService;
+        //this.passwordEncoder=passwordEncoder;
     }
 
 
@@ -30,6 +32,10 @@ public class UserController {
     @PostMapping("admin/user/create")
     public String postUSerPage(@ModelAttribute ("newUser") User newUser, @RequestParam("bqmFile")MultipartFile file){
         String avatar=uploadService.uploadFile(file,"avatar");
+       // String hashPassword=passwordEncoder.encode(newUser.getPassword());
+        newUser.setAvatar(avatar);
+       // newUser.setPassword(hashPassword);
+        newUser.setRole(userService.getRoleByName(newUser.getRole().getName()));
         userService.saveUser(newUser);
         return "redirect:/admin/user";
     }
