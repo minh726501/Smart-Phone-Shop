@@ -37,6 +37,7 @@
                         <li class="list-group-item">Full Name: ${viewUser.fullName}</li>
                         <li class="list-group-item">Gmail: ${viewUser.email}</li>
                         <li class="list-group-item">Address: ${viewUser.address}</li>
+                        <li class="list-group-item">Role: ${viewUser.role.name}</li>
                         <li class="list-group-item">
                            Image: <img src="/images/avatar/${viewUser.avatar}" alt="Ảnh sản phẩm" width="300" height="300">
                         </li>

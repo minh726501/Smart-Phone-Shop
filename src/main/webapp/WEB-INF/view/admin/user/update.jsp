@@ -49,6 +49,13 @@
                                             <label class="form-label">Address:</label>
                                             <form:input type="text" name="address" class="form-control" path="address"  />
                                         </div>
+                                        <div class="mb-3">
+                                             <label class="form-label">Role:</label>
+                                             <form:select class="form-select" path="role.name">
+                                             <form:option value="ADMIN">ADMIN</form:option>
+                                             <form:option value="USER">USER</form:option>
+                                            </form:select>
+                                        </div>
                                         <button type="submit" class="btn btn-warning mx-2">Update</button>
                                         <a href="/admin/user" class="btn btn-secondary">Cancel</a>
                                     </form:form>

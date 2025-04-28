@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,8 +17,8 @@
         <div class="row">
             <div class="col-12 mx-auto">
                 <div class="d-flex justify-content-between">
-                    <h3>Table User</h3>
-                    <a href="/admin/user/create" class="btn btn-primary">Create a user</a>
+                    <h3>Table Product</h3>
+                    <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
                 </div>
                 <hr />
                 <table class="table table-bordered table-hover">
@@ -25,36 +26,38 @@
                 </table>
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Manage User</h1>
+                        <h1 class="mt-4">Manage Product</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                            <li class="breadcrumb-item active">User</li>
+                            <li class="breadcrumb-item active">Product</li>
                         </ol>
-                        <div>table user</div>
+
                     </div>
                 </main>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Gmail</th>
-                            <th>Full Name</th>
-                            <th>Role</th>
+                            <th>Name</th>
+                            <th>Price</th>
+
+                            <th>Factory</th>
                             <th>Action</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="user" items="${users}">
+                        <c:forEach var="product" items="${product}">
                             <tr>
-                                <td>${user.id}</td>
-                                <td>${user.email}</td>
-                                <td>${user.fullName}</td>
-                                <td>${user.role.name}</td>
+                                <td>${product.id}</td>
+                                <td>${product.name}</td>
+                                <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></td>
+                                <td>${product.factory}</td>
 
                                 <td>
-                                    <a href="/admin/user/view/${user.id}" class="btn btn-success">View</a>
-                                    <a href="/admin/user/update/${user.id}" class="btn btn-warning mx-2">Update</a>
-                                    <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
+                                    <a href="/admin/product/view/${product.id}" class="btn btn-success">View</a>
+                                    <a href="/admin/product/update/${product.id}" class="btn btn-warning mx-2">Update</a>
+                                    <a href="/admin/product/delete/${product.id}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         </c:forEach>
