@@ -47,17 +47,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="product" items="${product}">
+                        <c:forEach var="p" items="${product}">
                             <tr>
-                                <td>${product.id}</td>
-                                <td>${product.name}</td>
-                                <td><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></td>
-                                <td>${product.factory}</td>
+                                <td>${p.id}</td>
+                                <td>${p.name}</td>
+                                <td><fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></td>
+                                <td>${p.factory}</td>
 
                                 <td>
-                                    <a href="/admin/product/view/${product.id}" class="btn btn-success">View</a>
-                                    <a href="/admin/product/update/${product.id}" class="btn btn-warning mx-2">Update</a>
-                                    <a href="/admin/product/delete/${product.id}" class="btn btn-danger">Delete</a>
+                                    <a href="/admin/product/view/${p.id}" class="btn btn-success">View</a>
+                                    <a href="/admin/product/update/${p.id}" class="btn btn-warning mx-2">Update</a>
+                                    <a href="/admin/product/delete/${p.id}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         </c:forEach>

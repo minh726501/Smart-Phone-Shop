@@ -4,6 +4,8 @@ import com.bqminh.SmartPhoneShop.enity.Product;
 import com.bqminh.SmartPhoneShop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -14,5 +16,8 @@ public class ProductService {
 
     public Product saveProduct(Product product){
         return productRepository.save(product);
+    }
+    public List<Product> getAllProduct(){
+        return productRepository.findAll();
     }
 }
