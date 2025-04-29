@@ -5,8 +5,11 @@ import com.bqminh.SmartPhoneShop.Service.UserService;
 import com.bqminh.SmartPhoneShop.enity.Role;
 import com.bqminh.SmartPhoneShop.enity.User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +34,14 @@ public class UserController {
         return "admin/user/create";
     }
     @PostMapping("admin/user/create")
-    public String postUserPage(@ModelAttribute ("newUser") User newUser, @RequestParam("bqmFile")MultipartFile file){
+    public String postUserPage(@ModelAttribute ("newUser") @Valid User newUser, BindingResult bindingResult, @RequestParam("bqmFile")MultipartFile file){
+        List<FieldError> errors=bindingResult.getFieldErrors();
+        for (FieldError error:errors){
+            System.out.println(">>>>"+error.getField()+"-"+error.getDefaultMessage()+"<<<<");
+        }
+        if (bindingResult.hasErrors()){
+            return "admin/user/create";
+        }
         String avatar=uploadService.uploadFile(file,"avatar");
        // String hashPassword=passwordEncoder.encode(newUser.getPassword());
         newUser.setAvatar(avatar);

@@ -42,12 +42,13 @@
                 <form:form method="post" action="/admin/user/create" modelAttribute="newUser" class="row" enctype="multipart/form-data">
                     <div class="mb-3 col-12 col-md-6">
                         <label class="form-label">Email:</label>
-                        <form:input type="email" name="email" class="form-control" path="email" />
-                        <form:errors path="email" />
+                        <form:input type="text" name="email" class="form-control" path="email" />
+                         <form:errors path="email" cssClass="text-danger" />
                     </div>
                     <div class="mb-3 col-12 col-md-6">
                         <label class="form-label">Full Name:</label>
                         <form:input type="text" name="fullName" class="form-control" path="fullName" />
+                         <form:errors path="fullName" cssClass="text-danger" />
                     </div>
                     <div class="mb-3 col-12 col-md-6">
                         <label class="form-label">Phone Number:</label>
@@ -60,6 +61,7 @@
                     <div class="mb-3 col-12 col-md-6">
                         <label class="form-label">Password:</label>
                         <form:input type="password" name="password" class="form-control" path="password" />
+                         <form:errors path="password" cssClass="text-danger" />
                     </div>
                     <div class="mb-3 col-12 col-md-6">
                         <label class="form-label">Role:</label>

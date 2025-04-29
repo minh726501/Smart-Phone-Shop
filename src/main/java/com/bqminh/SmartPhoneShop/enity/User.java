@@ -2,6 +2,7 @@ package com.bqminh.SmartPhoneShop.enity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -13,15 +14,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-   // @NotNull
-   // @Email(message = "Email cannot be null",regexp = "^[a-ZA-ZO-9_|#$%&'*+/=?*{|f~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotBlank(message ="Email must not be blank")
+    @Email
     private String email;
-    //@NotNull
-    //@Size(min = 3)
+    @NotBlank(message = "Password must not be blank")
     private String password;
     private String address;
-    //@NotNull
-    //@Size(min = 2)
+    @NotBlank(message = "Full Name must not be blank")
     private String fullName;
     private String phone;
     private String avatar;

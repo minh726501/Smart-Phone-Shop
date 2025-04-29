@@ -1,9 +1,6 @@
 package com.bqminh.SmartPhoneShop.enity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -11,6 +8,7 @@ import java.util.List;
 @Table(name = "products")
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private double price;
