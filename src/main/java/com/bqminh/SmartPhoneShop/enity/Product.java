@@ -1,6 +1,8 @@
 package com.bqminh.SmartPhoneShop.enity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -10,12 +12,15 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank(message = "Product name must not be blank")
     private String name;
+    @Min(value = 0, message = "Price must be greater than or equal to 0")
     private double price;
     private String image;
     private String detailDesc;
     private String shortDesc;
     private long quantity;
+    @Min(value = 0, message = "Sold must be greater than or equal to 0")
     private long sold;
     private String factory;
     private String target;

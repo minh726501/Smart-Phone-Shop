@@ -1,21 +1,26 @@
 package com.bqminh.SmartPhoneShop.controller.admin;
 
 import com.bqminh.SmartPhoneShop.Service.ProductService;
+import com.bqminh.SmartPhoneShop.Service.UploadService;
 import com.bqminh.SmartPhoneShop.enity.Product;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
 public class ProductController {
     private final ProductService productService;
+    private final UploadService uploadService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,UploadService uploadService) {
         this.productService = productService;
+        this.uploadService=uploadService;
     }
 
     @GetMapping("/admin/product")
@@ -30,8 +35,34 @@ public class ProductController {
         return "admin/product/create";
     }
     @PostMapping("/admin/product/create")
-    public String postProduct(@ModelAttribute("newProduct") Product product){
+    public String postProduct(@ModelAttribute("newProduct")@Valid Product product, BindingResult bindingResult, @RequestParam("bqmFile")MultipartFile file){
+        List<FieldError>errors=bindingResult.getFieldErrors();
+        for (FieldError error:errors){
+            System.out.println(">>>>"+error.getField()+"-"+error.getDefaultMessage()+"<<<<");
+        }
+        if (bindingResult.hasErrors()){
+            return "admin/product/create";
+        }
+        String imageProduct=uploadService.uploadFile(file,"product");
         productService.saveProduct(product);
+        return "redirect:/admin/product";
+    }
+    @GetMapping("/admin/product/update/{id}")
+    public String updateProduct(@PathVariable long id,Model model){
+        Product updateProduct=productService.getProductById(id);
+        model.addAttribute("updateProduct",updateProduct);
+        return"admin/product/update";
+    }
+    @PostMapping("/admin/product/update")
+    public String postUpdateProduct(@ModelAttribute("updateProduct")Product updateProduct){
+        Product getProduct=productService.getProductById(updateProduct.getId());
+        getProduct.setName(updateProduct.getName());
+        getProduct.setPrice(updateProduct.getPrice());
+        getProduct.setShortDesc(updateProduct.getShortDesc());
+        getProduct.setDetailDesc(updateProduct.getDetailDesc());
+        getProduct.setQuantity(updateProduct.getQuantity());
+        getProduct.setFactory(updateProduct.getFactory());
+        productService.saveProduct(getProduct);
         return "redirect:/admin/product";
     }
 }
