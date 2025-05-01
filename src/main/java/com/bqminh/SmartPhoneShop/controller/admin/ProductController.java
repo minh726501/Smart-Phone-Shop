@@ -43,7 +43,8 @@ public class ProductController {
         if (bindingResult.hasErrors()){
             return "admin/product/create";
         }
-        String imageProduct=uploadService.uploadFile(file,"product");
+        String imageProduct=uploadService.upLoadFile(file,"product");
+        product.setImage(imageProduct);
         productService.saveProduct(product);
         return "redirect:/admin/product";
     }
@@ -64,5 +65,11 @@ public class ProductController {
         getProduct.setFactory(updateProduct.getFactory());
         productService.saveProduct(getProduct);
         return "redirect:/admin/product";
+    }
+    @GetMapping("/admin/product/view/{id}")
+    public String viewProduct(@PathVariable long id,Model model){
+        Product getProduct=productService.getProductById(id);
+        model.addAttribute("viewProduct",getProduct);
+        return"admin/product/detail";
     }
 }

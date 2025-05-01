@@ -24,7 +24,7 @@ public class UserService {
         return userRepository.findAll();
     }
     public User getUserById(long id){
-        return userRepository.findById(id);
+        return userRepository.getUserById(id);
     }
     public void deleteUser(User user){
         userRepository.delete(user);

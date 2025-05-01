@@ -42,7 +42,7 @@ public class UserController {
         if (bindingResult.hasErrors()){
             return "admin/user/create";
         }
-        String avatar=uploadService.uploadFile(file,"avatar");
+        String avatar=uploadService.upLoadFile(file,"avatar");
        // String hashPassword=passwordEncoder.encode(newUser.getPassword());
         newUser.setAvatar(avatar);
        // newUser.setPassword(hashPassword);
@@ -57,7 +57,7 @@ public class UserController {
         return "admin/user/show";
     }
     @GetMapping("/admin/user/view/{id}")
-    public String detailUser(@PathVariable long id,Model model){
+    public String detailUser(Model model,@PathVariable long id){
         User user=userService.getUserById(id);
         model.addAttribute("viewUser",user);
         return "admin/user/detail";

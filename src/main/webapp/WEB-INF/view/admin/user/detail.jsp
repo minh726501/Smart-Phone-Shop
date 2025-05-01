@@ -33,12 +33,13 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">ID: ${viewUser.id}</li>
-
+                        <li class="list-group-item">Role: ${viewUser.getRole().getName()}</li>
                         <li class="list-group-item">Full Name: ${viewUser.fullName}</li>
                         <li class="list-group-item">Gmail: ${viewUser.email}</li>
                         <li class="list-group-item">Address: ${viewUser.address}</li>
-                        <li class="list-group-item">Role: ${viewUser.role.name}</li>
                         <li class="list-group-item">
+                        <p>Avatar raw value: ${viewUser.avatar}</p>
+
                            Image: <img src="/images/avatar/${viewUser.avatar}" alt="Ảnh sản phẩm" width="300" height="300">
                         </li>
                     </ul>

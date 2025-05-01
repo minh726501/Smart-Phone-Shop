@@ -13,23 +13,34 @@ public class UploadService {
     public UploadService(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
-    public String uploadFile(MultipartFile file,String targetFolder){
-        String rootPath=servletContext.getRealPath("/resources/images");
-        String finalName="";
+
+    public String upLoadFile(MultipartFile file, String targetFolder) {
+        if (file.isEmpty()) {
+            return "";
+        }
+        String fileName = "";
         try {
-            byte[]bytes= file.getBytes();
-            File dir=new File(rootPath+File.separator+targetFolder);
-            if (!dir.exists())
+            byte[] bytes = file.getBytes();
+
+            // Lấy đường dẫn thực đến thư mục target
+            String rootPath = System.getProperty("user.dir") + "/target/classes/static/images/" + targetFolder;
+            File dir = new File(rootPath);
+            if (!dir.exists()) {
                 dir.mkdirs();
-            //create the file on server
-            finalName=dir.getAbsolutePath()+File.separator+System.currentTimeMillis()+"-"+file.getOriginalFilename();
-            File serverFile=new File(finalName);
-            BufferedOutputStream stream=new BufferedOutputStream(new FileOutputStream(serverFile));
+            }
+
+            // Tạo file mới
+            fileName = System.currentTimeMillis() + "." + file.getOriginalFilename();
+            File serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
             stream.write(bytes);
             stream.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return finalName;
+        return fileName;
     }
+
 }
+
+
