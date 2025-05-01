@@ -62,7 +62,7 @@ public class Product {
     public String getDetailDesc() {
         return detailDesc;
     }
-
+    @Column(columnDefinition = "MEDIUMTEXT")
     public void setDetailDesc(String detailDesc) {
         this.detailDesc = detailDesc;
     }
