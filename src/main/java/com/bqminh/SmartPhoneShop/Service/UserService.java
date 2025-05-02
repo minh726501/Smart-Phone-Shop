@@ -1,5 +1,6 @@
 package com.bqminh.SmartPhoneShop.Service;
 
+import com.bqminh.SmartPhoneShop.dto.RegisterDTO;
 import com.bqminh.SmartPhoneShop.enity.Role;
 import com.bqminh.SmartPhoneShop.enity.User;
 import com.bqminh.SmartPhoneShop.repository.RoleRepository;
@@ -31,6 +32,13 @@ public class UserService {
     }
     public Role getRoleByName(String role){
         return roleRepository.getRoleByName(role);
+    }
+    public User registerDTOtoUser(RegisterDTO registerDTO){
+        User user=new User();
+        user.setFullName(registerDTO.getFirstName()+" "+registerDTO.getLastName());
+        user.setEmail(registerDTO.getEmail());
+        user.setPassword(registerDTO.getPassword());
+        return user;
     }
 
 }

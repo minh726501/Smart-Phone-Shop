@@ -51,7 +51,7 @@
                             <tr>
                                 <td>${p.id}</td>
                                 <td>${p.name}</td>
-                                <td><fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></td>
+                                <td><fmt:formatNumber value="${p.price}" type="currency" currencySymbol="$" maxFractionDigits="0"/></td>
                                 <td>${p.factory}</td>
 
                                 <td>

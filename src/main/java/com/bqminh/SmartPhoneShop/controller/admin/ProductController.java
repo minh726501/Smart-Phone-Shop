@@ -84,4 +84,5 @@ public class ProductController {
         productService.deleteProduct(getProduct.getId());
         return "redirect:/admin/product";
     }
+
 }

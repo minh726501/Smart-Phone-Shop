@@ -84,12 +84,13 @@
                                                     <div class="col-md-6 col-lg-4 col-xl-3">
                                                         <div class="rounded position-relative fruite-item">
                                                             <div class="fruite-img">
-                                                                <img src="${pageContext.request.contextPath}/images/product/${product.image}"
+                                                                <img src="/images/product/${product.image}"
 
-                                                                    class="img-fluid w-100 rounded-top" alt="">
+                                                                    style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px 10px 0 0;"
+                                                                         alt="">
                                                             </div>
                                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                                style="top: 10px; left: 10px;">Laptop</div>
+                                                                style="top: 10px; left: 10px;">New</div>
                                                             <div
                                                                 class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                                 <h4 style="font-size: 15px;">
@@ -104,7 +105,7 @@
                                                                     <p style="font-size: 15px; text-align: center; width: 100%;"
                                                                         class="text-dark  fw-bold mb-3">
                                                                         <fmt:formatNumber type="number"
-                                                                            value="${product.price}" /> đ
+                                                                            value="${product.price}" /> $
                                                                     </p>
                                                                     <form action="/add-product-to-cart/${product.id}"
                                                                         method="post">
