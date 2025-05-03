@@ -74,8 +74,8 @@
                                         <div class="col-lg-6">
                                             <div class="border rounded">
                                                 <a href="#">
-                                                    <img src="/images/product/${detailProduct.image}"
-                                                        style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px 10px 0 0;"
+                                                    <img src="${pageContext.request.contextPath}/images/product/${detailProduct.image}"
+                                                        style="width:100%; height: 250px; object-fit: cover; border-radius: 10px 10px 0 0;"
                                                                                                                                  alt="">
                                                 </a>
                                             </div>

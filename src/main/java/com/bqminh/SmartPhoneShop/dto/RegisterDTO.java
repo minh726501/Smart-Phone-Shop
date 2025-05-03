@@ -1,5 +1,8 @@
 package com.bqminh.SmartPhoneShop.dto;
 
+import com.bqminh.SmartPhoneShop.validator.ValidRegister;
+
+@ValidRegister
 public class RegisterDTO {
     private String firstName;
     private String lastName;
