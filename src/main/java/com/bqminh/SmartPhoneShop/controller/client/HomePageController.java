@@ -5,8 +5,11 @@ import com.bqminh.SmartPhoneShop.Service.UserService;
 import com.bqminh.SmartPhoneShop.dto.RegisterDTO;
 import com.bqminh.SmartPhoneShop.enity.Product;
 import com.bqminh.SmartPhoneShop.enity.User;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +46,14 @@ public class HomePageController {
         return "client/auth/register";
     }
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute("userRegister") RegisterDTO registerDTO){
+    public String postRegister(@ModelAttribute("userRegister") @Valid RegisterDTO registerDTO, BindingResult bindingResult){
+        List<FieldError>errors=bindingResult.getFieldErrors();
+        for (FieldError error:errors){
+            System.out.println(">>>>"+error.getField()+"-"+error.getDefaultMessage()+"<<<<");
+        }
+        if (bindingResult.hasErrors()){
+            return "client/auth/register";
+        }
         User user=userService.registerDTOtoUser(registerDTO);
         // String hashPassword=passwordEncoder.encode(user.getPassword());
         //user.setPassword(hashPassword);

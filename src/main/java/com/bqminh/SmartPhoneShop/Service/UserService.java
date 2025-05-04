@@ -40,5 +40,8 @@ public class UserService {
         user.setPassword(registerDTO.getPassword());
         return user;
     }
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
 
 }

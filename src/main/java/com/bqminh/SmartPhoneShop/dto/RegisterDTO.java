@@ -1,11 +1,16 @@
 package com.bqminh.SmartPhoneShop.dto;
 
 import com.bqminh.SmartPhoneShop.validator.ValidRegister;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @ValidRegister
 public class RegisterDTO {
+    @NotBlank(message = "First Name must not be blank")
     private String firstName;
     private String lastName;
+    @NotBlank(message ="Email must not be blank")
+    @Email
     private String email;
     private String password;
     private String confirmPassword;
