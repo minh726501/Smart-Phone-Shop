@@ -6,6 +6,7 @@ import com.bqminh.SmartPhoneShop.enity.Role;
 import com.bqminh.SmartPhoneShop.enity.User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +20,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final UploadService uploadService;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UploadService uploadService/*PasswordEncoder passwordEncoder*/) {
+    public UserController(UserService userService, UploadService uploadService,PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
-        //this.passwordEncoder=passwordEncoder;
+        this.passwordEncoder=passwordEncoder;
     }
 
 
@@ -43,9 +44,9 @@ public class UserController {
             return "admin/user/create";
         }
         String avatar=uploadService.upLoadFile(file,"avatar");
-       // String hashPassword=passwordEncoder.encode(newUser.getPassword());
+        String hashPassword=passwordEncoder.encode(newUser.getPassword());
         newUser.setAvatar(avatar);
-       // newUser.setPassword(hashPassword);
+        newUser.setPassword(hashPassword);
         newUser.setRole(userService.getRoleByName(newUser.getRole().getName()));
         userService.saveUser(newUser);
         return "redirect:/admin/user";

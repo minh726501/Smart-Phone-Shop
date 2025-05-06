@@ -1,5 +1,7 @@
 package com.bqminh.SmartPhoneShop.config;
+import com.bqminh.SmartPhoneShop.Service.CustomLoginSuccessHandler;
 import com.bqminh.SmartPhoneShop.Service.CustomUserDetailsService;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,9 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
     @EnableMethodSecurity(securedEnabled = true)
     public class SecurityConfiguration {
     private final CustomUserDetailsService userDetailsService;
-
-    public SecurityConfiguration(CustomUserDetailsService userDetailsService) {
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
+    public SecurityConfiguration(CustomUserDetailsService userDetailsService,CustomLoginSuccessHandler customLoginSuccessHandler) {
         this.userDetailsService = userDetailsService;
+        this.customLoginSuccessHandler=customLoginSuccessHandler;
     }
 
     @Bean
@@ -35,11 +38,15 @@ import org.springframework.security.web.SecurityFilterChain;
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/css/**", "/js/**").permitAll()
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD,DispatcherType.INCLUDE)
+                        .permitAll()
+                        .requestMatchers("/","/register","/login","/client/**", "/css/**", "/js/**,","/images/**","/product/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .successHandler(customLoginSuccessHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout
