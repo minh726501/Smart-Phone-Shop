@@ -48,7 +48,8 @@ import org.springframework.security.web.SecurityFilterChain;
                         .loginPage("/login")
                         .successHandler(customLoginSuccessHandler)
                         .permitAll()
-                )
+                        )
+                .exceptionHandling(ex->ex.accessDeniedPage("/access-deny"))
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()

@@ -3,6 +3,7 @@ package com.bqminh.SmartPhoneShop.Service;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -45,5 +46,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // Nếu không có role nào khớp, có thể đưa về trang lỗi hoặc trang mặc định
         throw new IllegalStateException("No target URL found for roles: " + authorities);
+    }
+    protected void clearAuthenticationAttributes(HttpServletRequest request,Authentication authentication) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return;
+        }
     }
 }
