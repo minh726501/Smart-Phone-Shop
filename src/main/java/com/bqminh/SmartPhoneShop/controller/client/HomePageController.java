@@ -6,6 +6,7 @@ import com.bqminh.SmartPhoneShop.dto.RegisterDTO;
 import com.bqminh.SmartPhoneShop.enity.Product;
 import com.bqminh.SmartPhoneShop.enity.User;
 import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,11 +22,12 @@ import java.util.List;
 public class HomePageController {
     private final ProductService productService;
     private final UserService userService;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public HomePageController(ProductService productService,UserService userService) {
+    public HomePageController(ProductService productService,UserService userService,PasswordEncoder passwordEncoder) {
         this.productService = productService;
         this.userService=userService;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @GetMapping("/")
@@ -55,8 +57,8 @@ public class HomePageController {
             return "client/auth/register";
         }
         User user=userService.registerDTOtoUser(registerDTO);
-        // String hashPassword=passwordEncoder.encode(user.getPassword());
-        //user.setPassword(hashPassword);
+         String hashPassword=passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPassword);
         user.setRole(userService.getRoleByName("USER"));
         userService.saveUser(user);
         return "redirect:/login";

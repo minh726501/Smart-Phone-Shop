@@ -1,5 +1,6 @@
 package com.bqminh.SmartPhoneShop.Service;
 
+import com.bqminh.SmartPhoneShop.enity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,11 @@ import java.util.Map;
 
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
+    private final UserService userService;
+
+    public CustomLoginSuccessHandler(UserService userService) {
+        this.userService = userService;
+    }
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -26,9 +32,25 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
-
+        // Xác định URL redirect dựa theo role
         String targetUrl = determineTargetUrl(authentication);
+        // Lưu thông tin vào session
+        HttpSession session=request.getSession();
+        //get email
+        String email=authentication.getName();
+        //query user
+        User user=userService.getUserByEmail(email);
+        if (user!=null){
+            session.setAttribute("fullName",user.getFullName());
+            session.setAttribute("avatar",user.getAvatar());
+        }
+        if (response.isCommitted()) {
+            return;
+        }
+        // Chuyển hướng đến URL phù hợp
         redirectStrategy.sendRedirect(request, response, targetUrl);
+        // Dọn session lỗi (nếu có)
+        clearAuthenticationAttributes(request,authentication);
     }
 
     protected String determineTargetUrl(final Authentication authentication) {
@@ -53,4 +75,5 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
     }
+
 }
