@@ -5,6 +5,8 @@ import com.bqminh.SmartPhoneShop.Service.UserService;
 import com.bqminh.SmartPhoneShop.dto.RegisterDTO;
 import com.bqminh.SmartPhoneShop.enity.Product;
 import com.bqminh.SmartPhoneShop.enity.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

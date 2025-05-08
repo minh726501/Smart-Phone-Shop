@@ -23,7 +23,7 @@ public class UploadService {
             byte[] bytes = file.getBytes();
 
             // Lấy đường dẫn thực đến thư mục target
-            String rootPath = System.getProperty("user.dir") + "/target/classes/static/images/" + targetFolder;
+            String rootPath = servletContext.getRealPath("/resources/images/" + targetFolder);
             File dir = new File(rootPath);
             if (!dir.exists()) {
                 dir.mkdirs();
