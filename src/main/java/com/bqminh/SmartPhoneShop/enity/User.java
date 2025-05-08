@@ -29,6 +29,7 @@ public class User {
     private Role role;
     @OneToMany(mappedBy = "user")
     private List<Order>orders;
+    @OneToOne(mappedBy = "user")
 
     public Role getRole() {
         return role;
