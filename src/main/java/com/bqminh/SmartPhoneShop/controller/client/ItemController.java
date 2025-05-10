@@ -20,7 +20,7 @@ public class ItemController {
         HttpSession session= request.getSession(false);
         long productId=id;
         String email= (String) session.getAttribute("email");
-        productService.addProductToCart(email,productId);
+        productService.addProductToCart(email,productId,session);
         return "redirect:/";
     }
 }

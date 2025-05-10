@@ -7,6 +7,8 @@ import com.bqminh.SmartPhoneShop.enity.User;
 import com.bqminh.SmartPhoneShop.repository.CartRepository;
 import com.bqminh.SmartPhoneShop.repository.Cart_DetailRepository;
 import com.bqminh.SmartPhoneShop.repository.ProductRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +41,7 @@ public class ProductService {
     public void deleteProduct(long id){
          productRepository.deleteById(id);
     }
-    public void addProductToCart(String email,long productid){
+    public void addProductToCart(String email, long productid, HttpSession session){
         //lay user
         User user=userService.getUserByEmail(email);
         if (user==null) {
@@ -50,16 +52,28 @@ public class ProductService {
         if (cart==null){
             Cart newCart=new Cart();
             newCart.setUser(user);
-            newCart.setSum(1);
+            newCart.setSum(0);
             cart=cartRepository.save(newCart);
         }
         //save Cart_detail
         Product product=productRepository.findById(productid);
+        //Kiểm tra sản phẩm đã có trong cart chưa
+        Cart_Detail existingDetail=cartDetailRepository.findByCartAndProduct(cart,product);
+        if (existingDetail==null){
         Cart_Detail cartDetail=new Cart_Detail();
         cartDetail.setCart(cart);
         cartDetail.setProduct(product);
         cartDetail.setPrice(product.getPrice());
         cartDetail.setQuantity(1);
         cartDetailRepository.save(cartDetail);
-    }
+        cart.setSum(cart.getSum());
+        cartRepository.save(cart);
+        session.setAttribute("sum",cart.getSum());
+    }else {
+            existingDetail.setQuantity(existingDetail.getQuantity()+1);
+            cartDetailRepository.save(existingDetail);
+
+        }
+
+        }
 }
