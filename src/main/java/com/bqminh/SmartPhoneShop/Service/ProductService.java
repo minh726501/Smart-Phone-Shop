@@ -50,10 +50,11 @@ public class ProductService {
         //Tìm cart hiện tại của user
         Cart cart=cartRepository.findByUser(user);
         if (cart==null){
-            Cart newCart=new Cart();
-            newCart.setUser(user);
-            newCart.setSum(0);
-            cart=cartRepository.save(newCart);
+            cart =new Cart();
+            cart.setUser(user);
+            cart.setSum(0);
+            cart=cartRepository.save(cart);
+
         }
         //save Cart_detail
         Product product=productRepository.findById(productid);
@@ -66,12 +67,14 @@ public class ProductService {
         cartDetail.setPrice(product.getPrice());
         cartDetail.setQuantity(1);
         cartDetailRepository.save(cartDetail);
-        cart.setSum(cart.getSum());
+        cart.setSum(cart.getSum()+1);
         cartRepository.save(cart);
         session.setAttribute("sum",cart.getSum());
     }else {
             existingDetail.setQuantity(existingDetail.getQuantity()+1);
             cartDetailRepository.save(existingDetail);
+            session.setAttribute("sum", cart.getSum());
+
 
         }
 

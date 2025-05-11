@@ -4,6 +4,7 @@ import com.bqminh.SmartPhoneShop.Service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -22,5 +23,9 @@ public class ItemController {
         String email= (String) session.getAttribute("email");
         productService.addProductToCart(email,productId,session);
         return "redirect:/";
+    }
+    @GetMapping("/cart")
+    public String getCartPage(){
+        return "client/cart/show";
     }
 }
