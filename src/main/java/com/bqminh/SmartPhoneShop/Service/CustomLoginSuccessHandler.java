@@ -45,6 +45,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("fullName",user.getFullName());
             session.setAttribute("avatar",user.getAvatar());
             session.setAttribute("email",user.getEmail());
+            session.setAttribute("id",user.getId());
             int sum=0;
             if (user.getCart()!=null){
                 sum=user.getCart().getSum();

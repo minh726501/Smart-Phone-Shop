@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -41,42 +42,59 @@ public class ProductService {
     public void deleteProduct(long id){
          productRepository.deleteById(id);
     }
-    public void addProductToCart(String email, long productid, HttpSession session){
+    public void addProductToCart(String email, long productid, HttpSession session) {
         //lay user
-        User user=userService.getUserByEmail(email);
-        if (user==null) {
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
             return;
         }
         //Tìm cart hiện tại của user
-        Cart cart=cartRepository.findByUser(user);
-        if (cart==null){
-            cart =new Cart();
+        Cart cart = cartRepository.findByUser(user);
+        if (cart == null) {
+            cart = new Cart();
             cart.setUser(user);
             cart.setSum(0);
-            cart=cartRepository.save(cart);
+            cart = cartRepository.save(cart);
 
         }
         //save Cart_detail
-        Product product=productRepository.findById(productid);
+        Product product = productRepository.findById(productid);
         //Kiểm tra sản phẩm đã có trong cart chưa
-        Cart_Detail existingDetail=cartDetailRepository.findByCartAndProduct(cart,product);
-        if (existingDetail==null){
-        Cart_Detail cartDetail=new Cart_Detail();
-        cartDetail.setCart(cart);
-        cartDetail.setProduct(product);
-        cartDetail.setPrice(product.getPrice());
-        cartDetail.setQuantity(1);
-        cartDetailRepository.save(cartDetail);
-        cart.setSum(cart.getSum()+1);
-        cartRepository.save(cart);
-        session.setAttribute("sum",cart.getSum());
-    }else {
-            existingDetail.setQuantity(existingDetail.getQuantity()+1);
+        Cart_Detail existingDetail = cartDetailRepository.findByCartAndProduct(cart, product);
+        if (existingDetail == null) {
+            Cart_Detail cartDetail = new Cart_Detail();
+            cartDetail.setCart(cart);
+            cartDetail.setProduct(product);
+            cartDetail.setPrice(product.getPrice());
+            cartDetail.setQuantity(1);
+            cartDetailRepository.save(cartDetail);
+            cart.setSum(cart.getSum() + 1);
+            cartRepository.save(cart);
+            session.setAttribute("sum", cart.getSum());
+        } else {
+            existingDetail.setQuantity(existingDetail.getQuantity() + 1);
             cartDetailRepository.save(existingDetail);
             session.setAttribute("sum", cart.getSum());
-
-
         }
-
+    }
+    public Cart getCartByUser(User user) {
+        return cartRepository.findByUser(user);
+    }
+    public void deleteCartDetail(long id,HttpSession session){
+        Optional<Cart_Detail> cartDetailOptional=cartDetailRepository.findById(id);
+        if (cartDetailOptional.isPresent()){
+            Cart_Detail cartDetail=cartDetailOptional.get();
+            Cart cart=cartDetail.getCart();
+            cartDetailRepository.deleteById(id);
+            if (cart.getSum()>1){
+                int sum=cart.getSum()-1;
+                cart.setSum(sum);
+                session.setAttribute("sum",sum);
+                cartRepository.save(cart);
+            }else {
+                cartDetailRepository.deleteById(id);
+                session.setAttribute("sum",0);
+            }
+        }
         }
 }
