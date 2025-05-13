@@ -1,17 +1,13 @@
 package com.bqminh.SmartPhoneShop.Service;
 
-import com.bqminh.SmartPhoneShop.enity.Cart;
-import com.bqminh.SmartPhoneShop.enity.Cart_Detail;
-import com.bqminh.SmartPhoneShop.enity.Product;
-import com.bqminh.SmartPhoneShop.enity.User;
-import com.bqminh.SmartPhoneShop.repository.CartRepository;
-import com.bqminh.SmartPhoneShop.repository.Cart_DetailRepository;
-import com.bqminh.SmartPhoneShop.repository.ProductRepository;
+import com.bqminh.SmartPhoneShop.enity.*;
+import com.bqminh.SmartPhoneShop.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +18,16 @@ public class ProductService {
     private final CartRepository cartRepository;
     private final Cart_DetailRepository cartDetailRepository;
     private final UserService userService;
+    private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
 
-    public ProductService(ProductRepository productRepository, CartRepository cartRepository, Cart_DetailRepository cartDetailRepository,UserService userService) {
+    public ProductService(ProductRepository productRepository, CartRepository cartRepository, Cart_DetailRepository cartDetailRepository, UserService userService, OrderRepository orderRepository, OrderProductRepository orderProductRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
-        this.userService=userService;
+        this.userService = userService;
+        this.orderRepository = orderRepository;
+        this.orderProductRepository = orderProductRepository;
     }
 
     public Product saveProduct(Product product){
@@ -97,4 +97,70 @@ public class ProductService {
             }
         }
         }
+    public void handleUpdateCartBeforeCheckout(List<Cart_Detail> cartDetails) {
+        // Duyệt qua tất cả các chi tiết giỏ hàng
+        for (Cart_Detail cartDetail : cartDetails) {
+            // Tìm CartDetail bằng ID
+            Optional<Cart_Detail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+
+            // Kiểm tra nếu CartDetail tồn tại
+            if (cdOptional.isPresent()) {
+                Cart_Detail currentCartDetail = cdOptional.get();  // Lấy CartDetail hiện tại
+
+                // Cập nhật số lượng sản phẩm trong giỏ hàng
+                currentCartDetail.setQuantity(cartDetail.getQuantity());
+
+                // Lưu lại CartDetail đã cập nhật
+                this.cartDetailRepository.save(currentCartDetail);
+            }
+
+        }
+
+    }
+    public void placeOrder(User user,HttpSession session,String receiverName,String receiverAddress,String receiverPhone){
+        Cart cart=cartRepository.findByUser(user);
+        if (cart != null) {
+            // Lấy danh sách chi tiết giỏ hàng
+            List<Cart_Detail> cartDetails = cart.getCartDetails();
+            // Tạo đối tượng đơn hàng
+            Order order = new Order();
+            order.setUser(user);
+            order.setReceiverName(receiverName);
+            order.setReceiverAddress(receiverAddress);
+            order.setReceiverPhone(receiverPhone);
+            order.setStatus("PENDING");
+            double totalPrice = 0;
+            for (Cart_Detail cd : cartDetails) {
+                totalPrice += cd.getPrice() * cd.getQuantity();  // Cập nhật công thức tính tiền
+            }
+            order.setTotalPrice(totalPrice);  // Gán tổng tiền cho đơn hàng
+            // Lưu đơn hàng
+            orderRepository.save(order);
+            // Lưu chi tiết đơn hàng từ giỏ hàng
+            for (Cart_Detail cd : cartDetails) {
+                Order_Product orderDetail = new Order_Product();
+                orderDetail.setOrder(order);
+                orderDetail.setProduct(cd.getProduct());
+                orderDetail.setPrice(cd.getPrice());
+                orderDetail.setQuantity(cd.getQuantity());
+
+                // Lưu chi tiết đơn hàng
+                orderProductRepository.save(orderDetail);
+            }
+
+            // Xóa chi tiết giỏ hàng
+            cartDetailRepository.deleteAll(cartDetails);
+
+            // Xóa giỏ hàng
+            cart.setCartDetails(new ArrayList<>());
+            cart.setSum(0);
+            cartRepository.save(cart);
+
+
+            // Cập nhật lại session
+            session.setAttribute("sum", 0);  // Xóa giỏ hàng trong session
+        }
+    }
+
+
 }

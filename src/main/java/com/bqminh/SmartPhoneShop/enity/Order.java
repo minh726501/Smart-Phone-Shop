@@ -21,6 +21,22 @@ public class Order {
     @OneToMany(mappedBy ="order" )
     List<Order_Product> orderProducts;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Order_Product> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<Order_Product> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
     public long getId() {
         return id;
     }
