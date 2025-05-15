@@ -99,7 +99,11 @@ public class ItemController {
         String email = (String) session.getAttribute("email");
         User user = userService.getUserByEmail(email);
         productService.placeOrder(user,session,receiverName,receiverAddress,receiverPhone);
-        return "/";
+        return "redirect:/thanks";
 
+    }
+    @GetMapping("/thanks")
+    public String thanksPage(){
+        return "client/cart/thanks";
     }
 }
