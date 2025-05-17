@@ -5,7 +5,9 @@ import com.bqminh.SmartPhoneShop.enity.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -29,4 +31,21 @@ public class OrderController {
         model.addAttribute("viewOrder",order);
         return "admin/order/detail";
     }
+    @GetMapping("/admin/order/update/{id}")
+    public String updateOrder(@PathVariable long id,Model model){
+        Order updateOrder=orderService.getOrderById(id);
+        model.addAttribute("updateOrder",updateOrder);
+        return "admin/order/update";
+    }
+    @PostMapping("/admin/order/update")
+    public String postOrder(@ModelAttribute("updateOrder")Order updateOrder){
+        Order getOrder=orderService.getOrderById(updateOrder.getId());
+        getOrder.setReceiverName(updateOrder.getReceiverName());
+        getOrder.setReceiverAddress(updateOrder.getReceiverAddress());
+        getOrder.setReceiverPhone(updateOrder.getReceiverPhone());
+        getOrder.setStatus(updateOrder.getStatus());
+        orderService.saveOrder(getOrder);
+        return "redirect:/admin/order";
+    }
+
 }
