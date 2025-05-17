@@ -47,5 +47,17 @@ public class OrderController {
         orderService.saveOrder(getOrder);
         return "redirect:/admin/order";
     }
+    @GetMapping("/admin/order/delete/{id}")
+    public String deleteOrder(@PathVariable long id,Model model){
+        Order order=orderService.getOrderById(id);
+        model.addAttribute("deleteOrder",order);
+        return "admin/order/delete";
+    }
+    @PostMapping("/admin/order/delete/{id}")
+    public String postDeleteOrder(@PathVariable long id){
+        Order getOrder=orderService.getOrderById(id);
+        orderService.deleteOrderById(getOrder.getId());
+        return "redirect:/admin/order";
+    }
 
 }
