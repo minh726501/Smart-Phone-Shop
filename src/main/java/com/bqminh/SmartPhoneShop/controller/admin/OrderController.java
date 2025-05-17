@@ -5,6 +5,7 @@ import com.bqminh.SmartPhoneShop.enity.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -21,5 +22,11 @@ public class OrderController {
         List<Order>getAllOrder=orderService.getListOrder();
         model.addAttribute("order",getAllOrder);
         return "admin/order/show";
+    }
+    @GetMapping("/admin/order/view/{id}")
+    public String detailOrder(@PathVariable long id, Model model){
+        Order order=orderService.getOrderById(id);
+        model.addAttribute("viewOrder",order);
+        return "admin/order/detail";
     }
 }
