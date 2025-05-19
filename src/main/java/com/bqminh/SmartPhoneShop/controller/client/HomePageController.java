@@ -1,8 +1,11 @@
 package com.bqminh.SmartPhoneShop.controller.client;
 
+import com.bqminh.SmartPhoneShop.Service.OrderService;
 import com.bqminh.SmartPhoneShop.Service.ProductService;
 import com.bqminh.SmartPhoneShop.Service.UserService;
 import com.bqminh.SmartPhoneShop.dto.RegisterDTO;
+import com.bqminh.SmartPhoneShop.enity.Order;
+import com.bqminh.SmartPhoneShop.enity.Order_Product;
 import com.bqminh.SmartPhoneShop.enity.Product;
 import com.bqminh.SmartPhoneShop.enity.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,11 +28,15 @@ public class HomePageController {
     private final ProductService productService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final OrderService orderService;
 
-    public HomePageController(ProductService productService,UserService userService,PasswordEncoder passwordEncoder) {
+
+    public HomePageController(ProductService productService, UserService userService, PasswordEncoder passwordEncoder, OrderService orderService) {
         this.productService = productService;
-        this.userService=userService;
-        this.passwordEncoder=passwordEncoder;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.orderService = orderService;
+
     }
 
     @GetMapping("/")
@@ -73,6 +80,15 @@ public class HomePageController {
     @GetMapping("/access-deny")
     public String getDenyPage(){
         return "client/auth/deny";
+    }
+    @GetMapping("order-history")
+    public String historyPage(Model model,HttpServletRequest request){
+        HttpSession session=request.getSession(false);
+        String email = (String) session.getAttribute("email");
+        User user=userService.getUserByEmail(email);
+        List<Order> order=orderService.getOrderByUser(user);
+        model.addAttribute("orders",order);
+        return "client/cart/order-history";
     }
 
 

@@ -2,6 +2,7 @@ package com.bqminh.SmartPhoneShop.Service;
 
 import com.bqminh.SmartPhoneShop.enity.Order;
 import com.bqminh.SmartPhoneShop.enity.Order_Product;
+import com.bqminh.SmartPhoneShop.enity.User;
 import com.bqminh.SmartPhoneShop.repository.OrderProductRepository;
 import com.bqminh.SmartPhoneShop.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,8 @@ public class OrderService {
         }
         orderRepository.deleteById(id);
 
+    }
+    public List<Order> getOrderByUser(User user){
+        return orderRepository.findByUser(user);
     }
 }
